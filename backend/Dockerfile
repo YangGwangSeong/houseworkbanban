@@ -10,7 +10,7 @@
 
 # CMD ["npm", "run", "start"]
 
-FROM node:16-alpine As build
+FROM node:16-alpine As builder
 
 WORKDIR /app
 
@@ -38,8 +38,8 @@ USER node
 FROM node:16-alpine As production
 
 # Copy the bundled code from the build stage to the production image
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=builder /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /usr/src/app/dist ./dist
 
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]
