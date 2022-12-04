@@ -10,17 +10,6 @@
 
 # CMD ["npm", "run", "start"]
 
-FROM node:16-alpine As development
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install --only=development
-
-COPY . .
-
-RUN npm run build
 
 FROM node:16-alpine as production
 
@@ -34,7 +23,5 @@ COPY package*.json ./
 RUN npm install --only=production
 
 COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
 
 CMD ["node", "dist/main"]
