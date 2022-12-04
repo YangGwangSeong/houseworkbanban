@@ -48,7 +48,7 @@ jobs:
           tags: yanggwangseong/housework-nginx:latest
 
       - name: Generate deployment package
-        run: zip -r deploy.zip docker-compose.yml
+        run: zip -r deploy.zip * -x "**node_modules**"
           
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
