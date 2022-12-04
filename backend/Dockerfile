@@ -8,4 +8,8 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "run", "start:prod"]
+RUN npm run build
+
+# CMD ["npm", "run", "start:prod"]
+
+CMD [ "node", "dist/main.js "]
