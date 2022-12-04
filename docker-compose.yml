@@ -1,7 +1,7 @@
 version: "3"
 services:
   frontend:
-    image: yanggwangseong/housework-frontend:latest
+    image: yanggwangseong/docker-frontend
     volumes:
       - /app/node_modules
       - ./frontend:/app
@@ -10,12 +10,12 @@ services:
   
   nginx:
     restart: always
-    image: yanggwangseong/housework-nginx:latest
+    image: yanggwangseong/docker-nginx
     ports:
       - "80:80"
   
   backend:
-    image: yanggwangseong/housework-backend:latest
+    image: yanggwangseong/docker-backend
     container_name: app_backend
     volumes:
       - /app/node_modules
