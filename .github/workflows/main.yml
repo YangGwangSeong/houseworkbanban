@@ -1,0 +1,60 @@
+name: deployment from ElasticBeanstalk nest.js, nginx, react.js
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest Repo
+        uses: actions/checkout@main
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
+      - name: Build and push frontend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./frontend
+          push: true
+          tags: yanggwangseong/housework-frontend:latest
+          
+      - name: Build and push backend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./backend
+          push: true
+          tags: yanggwangseong/housework-backend:latest
+          
+      - name: Build and push nginx
+        uses: docker/build-push-action@v3
+        with:
+          context: ./nginx
+          push: true
+          tags: yanggwangseong/housework-nginx:latest
+          
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: housework-banban-app
+          environment_name: Houseworkbanbanapp-env
+          region: ap-northeast-2
+          deployment_package: docker-compose.yml
+          
+      
