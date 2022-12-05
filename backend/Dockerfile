@@ -90,32 +90,24 @@
 
 # CMD ["node", "dist/main.js"]
 
-FROM node:16.14.2-alpine As development
+# Base image
+FROM node:16.14.2-alpine
 
+# Create app directory
 WORKDIR /app
 
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-RUN npm install --only=development
+# Install app dependencies
+RUN npm install
 
+# Bundle app source
 COPY . .
 
-RUN npm run --script build
+# Creates a "dist" folder with the production build
+RUN npm run build
 
-FROM node:16.14.2-alpine As production
-
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install --only=production
-
-COPY . .
-
-COPY --from=development /app/dist ./dist
-
-CMD ["node", "dist/main"]
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]
 
