@@ -55,8 +55,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: housework-banban-app
-          environment_name: Houseworkbanbanapp-env
+          application_name: banban-app
+          environment_name: Banbanapp-env
           version_label: houtwork-${{ github.SHA }}
           region: ap-northeast-2
           existing_bucket_name: elasticbeanstalk-ap-northeast-2-586840563682

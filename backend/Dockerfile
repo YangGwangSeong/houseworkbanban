@@ -1,14 +1,14 @@
-FROM node:16-alpine
+# FROM node:16-alpine
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY ./package*.json ./
+# COPY ./package*.json ./
 
-RUN npm ci
+# RUN npm ci
 
-COPY . .
+# COPY . .
 
-CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "start"]
 
 
 # FROM node:16-alpine as production
@@ -47,17 +47,17 @@ CMD ["npm", "run", "start"]
 # CMD [ "node", "dist/main.js" ]
 
 
-# FROM node:16-alpine
+FROM node:16-alpine
 
-# WORKDIR /app
-# ## Step 1의 builder에서 build된 프로젝트를 가져온다
-# COPY ./package*.json ./
+WORKDIR /app
+## Step 1의 builder에서 build된 프로젝트를 가져온다
+COPY ./package*.json ./
 
-# RUN npm install
+RUN npm install
 
-# COPY . .
+COPY . .
 
-# RUN npm run --script build
+RUN npm run --script build
 
-# ## application 실행
-# CMD ["npm", "run", "start:prod"]
+## application 실행
+CMD ["npm", "run", "start:prod"]
