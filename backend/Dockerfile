@@ -119,8 +119,6 @@ WORKDIR /app
 
 COPY --chown=node:node ./package*.json ./
 
-COPY --chown=node:node --from=development /app/node_modules ./node_modules
-
 COPY --chown=node:node . .
 
 RUN npm run build
