@@ -46,7 +46,7 @@
 # # Start the server using the production build
 # CMD [ "node", "dist/main.js" ]
 
-## base image for Step 2: Node 10-alpine(light weight)
+
 FROM node:16-alpine
 
 WORKDIR /app
@@ -55,9 +55,9 @@ COPY ./package*.json ./
 
 RUN npm install
 
-RUN npm run build
-
 COPY . .
+
+RUN npm run --script build
 
 ## application 실행
 CMD ["npm", "run", "start:prod"]
