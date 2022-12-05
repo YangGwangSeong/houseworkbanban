@@ -91,23 +91,54 @@
 # CMD ["node", "dist/main.js"]
 
 # Base image
-FROM node:16.14.2-alpine
+# FROM node:16.14.2-alpine
 
-# Create app directory
+# # Create app directory
+# WORKDIR /app
+
+# # A wildcard is used to ensure both package.json AND package-lock.json are copied
+# COPY ./package*.json ./
+
+# # Install app dependencies
+# RUN npm install
+
+# # Bundle app source
+# COPY . .
+
+# # Creates a "dist" folder with the production build
+# RUN npm run build
+
+# COPY . .
+
+# # Start the server using the production build
+# CMD [ "node", "dist/main.js" ]
+
+FROM node:18-alpine As build
+
 WORKDIR /app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY ./package*.json ./
+COPY --chown=node:node ./package*.json ./
 
-# Install app dependencies
-RUN npm install
+COPY --chown=node:node --from=development /app/node_modules ./node_modules
 
-# Bundle app source
-COPY . .
+COPY --chown=node:node . .
 
-# Creates a "dist" folder with the production build
 RUN npm run build
 
-# Start the server using the production build
+ENV NODE_ENV production
+
+RUN npm ci --only=production && npm cache clean --force
+
+USER node
+
+###################
+# PRODUCTION
+###################
+
+FROM node:18-alpine As production
+
+COPY --chown=node:node --from=build /app/node_modules ./node_modules
+COPY --chown=node:node --from=build /app/dist ./dist
+
 CMD [ "node", "dist/main.js" ]
 
