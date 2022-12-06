@@ -19,9 +19,8 @@ services:
   backend:
     image: yanggwangseong/housework-backend:latest
     container_name: app_backend
-    command: npm run start:dev
     volumes:
-      # - /app/node_modules
+      - /app/node_modules
       - ./backend:/app
     environment:
       POSTGRESQL_HOST: $POSTGRESQL_ROOT_PASSWORD
