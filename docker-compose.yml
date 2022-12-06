@@ -22,4 +22,10 @@ services:
     # volumes:
     #   - /app/node_modules
     #   - ./backend:/app
+    environment:
+      POSTGRESQL_HOST: $POSTGRESQL_ROOT_PASSWORD
+      POSTGRESQL_USER: $POSTGRESQL_USER
+      POSTGRESQL_ROOT_PASSWORD: $POSTGRESQL_ROOT_PASSWORD
+      POSTGRESQL_DATABASE: $POSTGRESQL_DATABASE
+      POSTGRESQL_PORT: $POSTGRESQL_PORT
     
